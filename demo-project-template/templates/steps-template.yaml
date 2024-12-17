@@ -1,0 +1,8 @@
+steps:
+- script: echo Hello, DevOps Engineer from ${{ parameters.operatingSystem }}!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Lets learn about how to create template files and use those template files Az pipelines.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'

@@ -1,0 +1,20 @@
+stages:
+- stage: ${{ parameters.environment }}
+  displayName: "${{ parameters.environment }}"
+  pool:
+    name: ${{ parameters.poolName }}
+  jobs:
+  - job: ${{ parameters.environment }}
+    variables:
+    - template: project1-variables-template.yaml
+      parameters:
+        environment: ${{ parameters.environment }}
+    steps:
+    - script: echo Hello Friends, This is  DevOps CnS ${{ parameters.environment }} Environment!
+      displayName: 'Run a one-line script from ${{ parameters.environment }} Environment'
+    
+    - script: |
+        echo "This is Demo project1 for template for understand ${{ parameters.variable1 }}"
+        echo "hope you understand it the project variable example"
+        echo "$(connectionString)"
+      displayName: 'Run a Multi-line script variable Demo from ${{ parameters.environment }} Environment'

@@ -1,0 +1,26 @@
+# parameters defination is mandatory because we are passing parameter to variable file
+# But its best practice to define parameters and use them by passing it.
+parameters:
+- name: environment
+  type: string
+  default: 'DEV'
+
+variables:
+  - name: environmentName
+    value: ${{ parameters.environment }}
+
+  - ${{ if eq(parameters.environment, 'DEV') }}:
+    - name: connectionString
+      value: "Server=dev-server;Database=dev-db;User Id=dev-user;Password=dev-password;"
+
+  - ${{ if eq(parameters.environment, 'QA') }}:
+    - name: connectionString
+      value: "Server=qa-server;Database=qa-db;User Id=qa-user;Password=qa-password;"
+
+  - ${{ if eq(parameters.environment, 'Stage') }}:
+    - name: connectionString
+      value: "Server=stage-server;Database=stage-db;User Id=stage-user;Password=stage-password;"
+
+  - ${{ if eq(parameters.environment, 'Production') }}:
+    - name: connectionString
+      value: "Server=prod-server;Database=prod-db;User Id=prod-user;Password=prod-password;"

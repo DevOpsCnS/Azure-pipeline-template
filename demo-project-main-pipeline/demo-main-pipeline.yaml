@@ -1,0 +1,70 @@
+resources:
+  repositories:
+    - repository: demo-project-template  # Alias for the template repository
+      type: git
+      name: DevOpsCnS/demo-project-template  # Specify the project and repository name
+      ref: refs/heads/main  # Branch or tag in the template repository
+
+trigger:
+  branches:
+    include:
+      - main  # Trigger pipeline on changes to the main branch
+
+pool:
+  name: self-hosted-agent
+
+variables:
+  - template: templates/global-template.yaml@demo-project-template
+
+stages:
+- stage: Build
+  jobs:
+  - job: Mac
+    steps:
+    - template: templates/steps-template.yaml@demo-project-template
+      parameters:
+        operatingSystem: Mac
+
+    - script: echo Welcome to DevOps CnS, This is template files demo using global variable $(variable1).!
+      displayName: 'Template Demo for global variable'
+
+  - job: Windows
+    dependsOn: Mac
+    pool:
+      name: $(poolName)
+    steps:
+    - template: templates/steps-template.yaml@demo-project-template
+      parameters:
+        operatingSystem: Windows
+
+  - template: templates/jobs-template.yaml@demo-project-template
+    parameters:
+      operatingSystem: ubuntu
+      poolName: $(poolName)
+
+
+- template: templates/stages-template.yaml@demo-project-template
+  parameters:
+    environment: DEV
+    poolName: $(poolName)
+    variable1: $(variable1)
+
+- template: templates/stages-template.yaml@demo-project-template
+  parameters:
+    environment: QA
+    poolName: $(poolName)
+    variable1: $(variable1)
+
+
+- template: templates/stages-template.yaml@demo-project-template
+  parameters:
+    environment: Stage
+    poolName: $(poolName)
+    variable1: $(variable1)
+
+- template: templates/stages-template.yaml@demo-project-template
+  parameters:
+    environment: Production
+    poolName: $(poolName)
+    variable1: $(variable1)
+

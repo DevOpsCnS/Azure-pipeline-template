@@ -1,0 +1,8 @@
+jobs:
+- job: ${{ parameters.operatingSystem }}
+  dependsOn: Windows
+  pool:
+    name: ${{ parameters.poolName }}
+  steps:
+  - script: echo Hello, world from ${{ parameters.operatingSystem }}!
+    displayName: 'Run a one-line script from ${{ parameters.operatingSystem }}'
